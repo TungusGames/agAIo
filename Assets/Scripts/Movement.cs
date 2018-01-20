@@ -37,13 +37,16 @@ public class Movement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//myController = new DummyController(); 
-		myController = new LuaController(0);
-		myController.setup(myStats);
-		InvokeRepeating("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
+		myController = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (myController == null) {
+			myController = new LuaController (0);
+			myController.setup (myStats);
+			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
+		}
 		speed = inputSpeed*myStats.maxSpeed;
 		float dAngle = inputAngle - angle;
 		dAngle %= 360;

@@ -15,7 +15,7 @@ function update(self, other)
 	
 	-- set v_t (move[0]) to target speed, f_t (move[1]) to target facing or move to nil to split
 	
-	
+	f_t,v_t=f,t
 	if(split)
 	then move=nil
 	else
