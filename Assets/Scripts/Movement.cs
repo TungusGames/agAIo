@@ -66,6 +66,12 @@ public class Movement : MonoBehaviour {
 	{
 		myController.update(radius, energy, speed, angle, new GameObject[0], out wantSplit, out inputSpeed, out inputAngle);
 	}
-
+		
+	public void setRadius(float newR)
+	{
+		transform.localScale = new Vector3(newR, newR, newR) * SimParameters.SPRITE_SCALAR;
+		SpawnHandler.getInstance().changeRadius(radius, newR);
+		radius = newR;
+	}
 
 }

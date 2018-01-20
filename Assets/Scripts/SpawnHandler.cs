@@ -5,6 +5,12 @@ using MoonSharp.Interpreter;
 public class SpawnHandler : MonoBehaviour {
 
 	public static string[] AIScripts;
+	private static SpawnHandler INSTANCE;
+	public static SpawnHandler getInstance()
+	{
+		return INSTANCE;
+	}
+
 
 	[SerializeField]
 	public GameObject prefab;
@@ -16,6 +22,7 @@ public class SpawnHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		INSTANCE = this;
 		Object[] texts = Resources.LoadAll("AIs/", typeof(TextAsset));
 		AIScripts = new string[texts.Length];
 		for (int i = 0; i < texts.Length; i++) {
@@ -54,7 +61,7 @@ end";}
 			float newY = 0; //Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			GameObject cell = Instantiate (prefab, new Vector3 (newX, newY, 0), Quaternion.identity);
 			addRadius(newRadius);
-			cell.GetComponent<Movement> ().addRadius (newRadius);
+			cell.GetComponent<Movement> ().setRadius(newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
 		}
 	}
@@ -64,6 +71,10 @@ end";}
 	}
 	public void removeRadius(float r) {
 		myTotalRadiusSquared -= r * r;
+	}
+	public void changeRadius(float old, float newR) {
+		removeRadius(old);
+		addRadius(newR);
 	}
 
 }
