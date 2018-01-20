@@ -38,7 +38,7 @@ function update(self, other)
 	
 	-- set split to true if want to split, otherwise set v_t to target speed, f_t to target facing; always return split
 	
-	v_t,f_t=1,0
+	v_t,f_t=0,0
 	
 	return split
 end";}
@@ -50,12 +50,11 @@ end";}
 	void Update () {
 		while (myTotalRadiusSquared < SimParameters.MAX_TOTAL_RADIUS_SQUARED) {
 			float newRadius = SimParameters.MIN_SPAWN_RADIUS + Random.value * (SimParameters.MAX_SPAWN_RADIUS - SimParameters.MIN_SPAWN_RADIUS);
-			float newX = Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH;
-			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT;
+			float newX = 1; //Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH / 2;
+			float newY = 0; //Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			GameObject cell = Instantiate (prefab, new Vector3 (newX, newY, 0), Quaternion.identity);
-			cell.transform.localScale = (new Vector3(newRadius, newRadius, newRadius)) * SimParameters.SPRITE_SCALAR;
-			cell.AddComponent(typeof(Movement));
 			addRadius(newRadius);
+			cell.GetComponent<Movement> ().addRadius (newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
 		}
 	}

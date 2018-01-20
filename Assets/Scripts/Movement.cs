@@ -27,7 +27,7 @@ public class Movement : MonoBehaviour {
 	private Controller myController;
 
 	private float energy = 0;
-	private float radius = 0.1f;
+	public float radius = 0.1f;
 	private float angle = 0;
 	private float speed = 1;
 
@@ -39,13 +39,14 @@ public class Movement : MonoBehaviour {
 		//myController = new DummyController(); 
 		myController = null;
 	}
-	
+		
 	// Update is called once per frame
 	void Update () {
 		if (myController == null) {
 			myController = new LuaController (0);
 			myController.setup (myStats);
 			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
+			Debug.Log (gameObject.GetComponent<SpriteRenderer> ().bounds.size.x);
 		}
 		speed = inputSpeed*myStats.maxSpeed;
 		float dAngle = inputAngle - angle;
@@ -65,4 +66,6 @@ public class Movement : MonoBehaviour {
 	{
 		myController.update(radius, energy, speed, angle, new GameObject[0], out wantSplit, out inputSpeed, out inputAngle);
 	}
+
+
 }
