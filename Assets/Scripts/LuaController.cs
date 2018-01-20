@@ -31,15 +31,12 @@ public class LuaController : Controller {
 		float[] self = new float[]{ radius, energy, speed, angle };
 		float[][] others = new float[0][];
 		DynValue res = ai.Call(ai.Globals["update"], self, others);
-		if (res.IsNil()) {
-			split = true;
-			goalSpeed = goalAngle = 0;
+		split = res.Boolean;
+		if (split) {
+			goalSpeed=0;goalAngle=0;
 		} else {
-			split = false;
-			var res_ = res.Table;
-			goalSpeed = (float)(res_[0]);
-			goalAngle = (float)(res_[1]);
+			goalSpeed = (float)ai.Globals.Get("v_t").Number;
+			goalAngle = (float)ai.Globals.Get("f_t").Number;
 		}
-
 	}
 }

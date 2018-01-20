@@ -28,15 +28,11 @@ function update(self, other)
 	-- other[i][] contains data about the i-th nerby AI, other[i][1] is its radius, other[i][2] is 1 if its the same species and 1 if its not, other[i][3] is its relative distance and other[i][4] is its direction from you
 	
 	
-	-- set v_t (move[0]) to target speed, f_t (move[1]) to target facing or move to nil to split
-	f_t,v_t=f,t
+	-- set split to true if want to split, otherwise set v_t to target speed, f_t to target facing; always return split
 	
-	if(split)
-	then move=nil
-	else
-		move = {}; move[0]=v_t; move[1]=f_t
-	end
-	return move;
+	v_t,f_t=10,100
+	
+	return split
 end";}
 		Debug.Log ("" + AIScripts.Length);
 	}
