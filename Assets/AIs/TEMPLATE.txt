@@ -10,7 +10,7 @@ function update(self, other)
 	split=false
 	r, E, v, f = self[1], self[2], self[3], self[4]
 	
-	
+	-- other[i][] contains data about the i-th nerby AI, other[i][1] is its radius, other[i][2] is 1 if its the same species and 1 if its not, other[i][3] is its relative distance and other[i][4] is its direction from you
 	
 	
 	-- set v_t (move[0]) to target speed, f_t (move[1]) to target facing or move to nil to split
