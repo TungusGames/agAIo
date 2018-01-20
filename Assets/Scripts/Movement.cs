@@ -15,6 +15,10 @@ public class Movement : MonoBehaviour {
 		{maxSpeed = maxSpeed; maxRot = maxRot; energyMul = energyMul; statGainMul = statGainMul; splitCostMul = splitCostMul;}
 		public Stats() 
 		{maxSpeed = 5; maxRot = 20; energyMul = statGainMul = splitCostMul = 1;}
+		public float[] asArray()
+		{
+			return new float[]{ maxSpeed, maxRot, energyMul, statGainMul, splitCostMul };
+		}
 	}
 
 	[SerializeField]
@@ -32,7 +36,8 @@ public class Movement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		myController = new DummyController(); 
+		//myController = new DummyController(); 
+		myController = new LuaController(0);
 		myController.setup(myStats);
 		InvokeRepeating("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
 	}
