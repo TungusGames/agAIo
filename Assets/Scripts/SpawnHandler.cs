@@ -26,9 +26,9 @@ public class SpawnHandler : MonoBehaviour {
 		Object[] texts = Resources.LoadAll("AIs/", typeof(TextAsset));
 		AIScripts = new string[texts.Length];
 		for (int i = 0; i < texts.Length; i++) {
-			AIScripts [i] = ((TextAsset)(texts [i])).text;
+			//AIScripts [i] = ((TextAsset)(texts [i])).text;
 
-			/*AIScripts [i] = @"-- AI template
+			AIScripts [i] = @"-- AI template
 
 function construct(stats)
 	v_max, r_max, E_mul, stat_mul,split_cost_mul = stats[1], stats[2], stats[3], stats[4], stats[5]
@@ -48,7 +48,7 @@ function update(self, other)
 	v_t,f_t=0,0
 	
 	return split
-end";*/}
+end";}
 		Debug.Log ("" + AIScripts.Length);
 		myNumAITypes = AIScripts.Length;
 	}

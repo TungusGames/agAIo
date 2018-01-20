@@ -11,9 +11,12 @@ public class LuaController : Controller {
 	public LuaController (int typeID)
 	{
 		this.typeID = typeID;
+		Debug.Log ("" + SpawnHandler.AIScripts.Length);
 		string script = SpawnHandler.AIScripts[typeID];
 		ai = new Script();
+		Debug.Log ("1.");
 		ai.DoString(script);
+		Debug.Log ("2.");
 	}
 
 	public void setup (Movement.Stats stats)
