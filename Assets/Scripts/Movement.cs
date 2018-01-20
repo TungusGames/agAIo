@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		speed = inputSpeed;
+		speed = inputSpeed*myStats.maxSpeed;
 		float dAngle = inputAngle - angle;
 		dAngle %= 360;
 		if (dAngle < -180)
