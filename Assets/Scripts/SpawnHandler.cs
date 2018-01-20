@@ -57,8 +57,8 @@ end";*/}
 	void Update () {
 		while (myTotalRadiusSquared < SimParameters.MAX_TOTAL_RADIUS_SQUARED) {
 			float newRadius = SimParameters.MIN_SPAWN_RADIUS + Random.value * (SimParameters.MAX_SPAWN_RADIUS - SimParameters.MIN_SPAWN_RADIUS);
-			float newX = 1; //Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH / 2;
-			float newY = 0; //Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
+			float newX = Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH / 2;
+			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			GameObject cell = Instantiate (prefab, new Vector3 (newX, newY, 0), Quaternion.identity);
 			addRadius(newRadius);
 			cell.GetComponent<Movement> ().setRadius(newRadius);

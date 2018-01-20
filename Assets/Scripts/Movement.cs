@@ -24,6 +24,9 @@ public class Movement : MonoBehaviour {
 	[SerializeField]
 	private Stats myStats = new Stats();
 
+	[SerializeField]
+	bool debugByPlayer = false;
+
 	private Controller myController;
 
 	private float energy = 0;
@@ -38,15 +41,18 @@ public class Movement : MonoBehaviour {
 	void Start () {
 		//myController = new DummyController(); 
 		myController = null;
+		setRadius(radius);
 	}
 		
 	// Update is called once per frame
 	void Update () {
 		if (myController == null) {
-			myController = new LuaController (0);
+			if (debugByPlayer)
+				myController = new PlayerController();
+			else
+				myController = new LuaController (0);
 			myController.setup (myStats);
 			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
-			Debug.Log (gameObject.GetComponent<SpriteRenderer> ().bounds.size.x);
 		}
 		speed = inputSpeed*myStats.maxSpeed;
 		float dAngle = inputAngle - angle;

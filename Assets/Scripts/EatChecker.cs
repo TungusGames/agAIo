@@ -10,6 +10,7 @@ public class EatChecker : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myCircle = gameObject.GetComponent<CircleCollider2D>();
+		myMovement = gameObject.GetComponent<Movement>();
 	}
 	
 	// Update is called once per frame
@@ -19,9 +20,12 @@ public class EatChecker : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other)
 	{
-		Debug.Log("Triggered!");
 		if (myCircle.OverlapPoint(other.transform.position)) {
-			Debug.Log("Eaten!");
+			float r1 = myMovement.radius;
+			float r2 = other.gameObject.GetComponent<Movement>().radius;
+			myMovement.setRadius(Mathf.Sqrt(r1 * r1 + r2 * r2));
+			SpawnHandler.getInstance().removeRadius(r2);
+			Destroy(other.gameObject);
 		}
 	}
 		
