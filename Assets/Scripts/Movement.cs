@@ -68,16 +68,23 @@ public class Movement : MonoBehaviour {
 		transform.Translate(Mathf.Cos(angle) * speed * Time.deltaTime, Mathf.Sin(angle) * speed * Time.deltaTime, 0);
 	}
 
-	void askController()
-	{
+	void askController() {
 		myController.update(radius, energy, speed, angle, new GameObject[0], out wantSplit, out inputSpeed, out inputAngle);
+		if (wantSplit)
+			;
+			//Split();
 	}
 		
-	public void setRadius(float newR)
-	{
+	public void setRadius(float newR) {
 		transform.localScale = new Vector3(newR, newR, newR) * SimParameters.SPRITE_SCALAR;
 		SpawnHandler.getInstance().changeRadius(radius, newR);
 		radius = newR;
+	}
+
+	public void split() {
+		
+		float dir = Random.value * 180;
+	
 	}
 
 }

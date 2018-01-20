@@ -36,4 +36,10 @@ public class LuaController : Controller {
 			goalAngle = (float)ai.Globals.Get("f_t").Number;
 		}
 	}
+
+	public float[] getEvolve() {
+		DynValue res = ai.Call(ai.Globals["getEvolve"]);
+		float[] vector = new float[0];
+		return vector;
+	}
 }
