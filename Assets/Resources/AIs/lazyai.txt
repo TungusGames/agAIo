@@ -1,0 +1,51 @@
+-- AI template
+
+function construct(stats)
+	a_max,v_max,E_mul, stat_mul,split_cost_mul = stats[1], stats[2], stats[3], stats[4], stats[5]
+	
+	return nil
+end
+
+function update(self, other)
+	split=false
+	r, E, v, f = self[1], self[2], self[3], self[4]
+	
+	-- other[i][] contains data about the i-th nerby AI, other[i][1] is its radius, other[i][2] is 1 if its the same species and 1 if its not, other[i][3] is its relative distance and other[i][4] is its direction from you
+	
+	
+	-- set split to true if want to split, otherwise set v_t to target speed, f_t to target facing; always return split
+	if r > 3 then
+		split = true
+	end
+	local lim = 2
+	local l = #other
+	local b = 0
+	local flee = false
+	v_t,f_t = 0,0
+	for i=1,l do
+		local rr = other[i][3]-other[i][1]
+		if rr < lim then
+			if other[i][1] < r and not flee then
+				if other[i][1] > b then
+					b,v_t,f_t = other[i][1],1,other[i][4]+180
+				end
+			end
+			if other[i][1] > r then
+				if not flee then
+					b,v_t,f_t = rr,1,other[i][4]
+				end
+				flee = true
+				if b > rr then
+					b,v_t,f_t = rr,1,other[i][4]
+				end
+			end
+		end
+	end
+	
+	return split
+end
+
+function getEvolve()
+	--calculate values for evolve: d_a_max, d_v_max, d_E_mul, d_stat_mul, d_split_cost_mul, sum must not exceed stat_mul or will be normalised
+	d_a_max,d_v_max,d_E_mul,d_stat_mul,d_split_cost_mul = 0,stat_mul/2,stat_mul/2,0,0
+end
