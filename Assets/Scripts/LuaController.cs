@@ -48,8 +48,19 @@ public class LuaController : Controller {
 		}
 	}
 
+
 	public int getTypeID()
 	{
 		return typeID;
+	}
+
+	public void getEvolve(out float[] weights) {
+		DynValue res = ai.Call(ai.Globals["getEvolve"]);
+		weights = new float[5];
+		weights[0] = Mathf.Abs ((float)ai.Globals.Get ("d_a_max").Number);
+		weights[1] = Mathf.Abs ((float)ai.Globals.Get ("d_v_max").Number);
+		weights[2] = Mathf.Abs ((float)ai.Globals.Get("d_E_mul").Number);
+		weights[3] = Mathf.Abs ((float)ai.Globals.Get("d_stat_mul").Number);
+		weights[4] = Mathf.Abs ((float)ai.Globals.Get("d_split_cost_mul").Number);
 	}
 }
