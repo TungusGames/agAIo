@@ -35,7 +35,7 @@ function update(self, other)
 		end
 	end
 	if frid~=-1 then
-		if (mindist-minfr<3) then
+		if (mindist-minfr<2) then
 			friendlyfire=true
 			v_t, f_t=1, other[frid][4]+180
 		end
