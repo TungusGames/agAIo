@@ -38,7 +38,7 @@ public class SpawnHandler : MonoBehaviour {
 			float newRadius = SimParameters.MIN_SPAWN_RADIUS + Random.value * (SimParameters.MAX_SPAWN_RADIUS - SimParameters.MIN_SPAWN_RADIUS);
 			float newX = Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH / 2;
 			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
-			addAI (currentAIType, newX, newY, 0, newRadius);
+			addAI (currentAIType, newX, newY, newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
 		}
 	}

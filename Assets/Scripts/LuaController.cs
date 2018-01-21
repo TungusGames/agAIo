@@ -54,7 +54,7 @@ public class LuaController : Controller {
 		return typeID;
 	}
 	public void getEvolve(out float[] weights) {
-		DynValue res = ai.Call(ai.Globals["getEvolve"]);
+		ai.Call(ai.Globals["getEvolve"]);
 		weights = new float[5];
 		weights[0] = Mathf.Abs ((float)ai.Globals.Get ("d_a_max").Number);
 		weights[1] = Mathf.Abs ((float)ai.Globals.Get ("d_v_max").Number);
