@@ -28,5 +28,13 @@ function update(self, other)
 			end
 		end
 	end
+	if r > 3 then
+		split = true
+	end
 	return split
+end
+
+function getEvolve()
+	--calculate values for evolve: d_a_max, d_v_max, d_E_mul, d_stat_mul, d_split_cost_mul, sum must not exceed stat_mul or will be normalised
+	d_a_max,d_v_max,d_E_mul,d_stat_mul,d_split_cost_mul = stat_mul/5,stat_mul/5,stat_mul/5,stat_mul/5,stat_mul/5
 end
