@@ -60,7 +60,9 @@ end";*/}
 			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			GameObject cell = Instantiate (prefab, new Vector3 (newX, newY, 0), Quaternion.identity);
 			addRadius(newRadius);
-			cell.GetComponent<Movement> ().setRadius(newRadius);
+			Movement mvt = cell.GetComponent<Movement> ();
+			mvt.initAIWithTypeID(currentAIType);
+			mvt.setRadius(newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
 		}
 	}

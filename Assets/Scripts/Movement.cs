@@ -55,7 +55,7 @@ public class Movement : MonoBehaviour {
 			if (debugByPlayer)
 				myController = new PlayerController();
 			else
-				myController = new LuaController (0);
+				myController = new LuaController (0, gameObject); //Should be never reached
 			myController.setup (myStats);
 			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
 		}
@@ -75,7 +75,12 @@ public class Movement : MonoBehaviour {
 
 	void askController()
 	{
-		myController.update(radius, energy, speed, angle, Physics2D.OverlapCircleAll(transform.position, radius*SimParameters.SIGHT_PER_RADIUS), 
+		Collider2D[] enemiesColliders = Physics2D.OverlapCircleAll (transform.position, radius * SimParameters.SIGHT_PER_RADIUS);
+		GameObject[] enemies = new GameObject[enemiesColliders.Length];
+		for (int i = 0; i < enemiesColliders.Length; ++i) {
+			enemies [i] = enemiesColliders [i].gameObject;
+		}
+		myController.update(radius, energy, speed, angle, enemies, 
 			out wantSplit, out inputSpeed, out inputAngle);
 	}
 		
@@ -86,7 +91,7 @@ public class Movement : MonoBehaviour {
 		radius = newR;
 	}
 
-	public void getTypeID()
+	public int getTypeID()
 	{
 		if (myController is LuaController) {
 			return ((LuaController)myController).getTypeID();
@@ -94,4 +99,8 @@ public class Movement : MonoBehaviour {
 			return -1;
 	}
 
+
+	public void initAIWithTypeID(int aiType) {
+		myController = new LuaController(aiType, gameObject);
+	}
 }

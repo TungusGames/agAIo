@@ -33,9 +33,9 @@ public class LuaController : Controller {
 			others[i] = new float[4];
 			var mvm = enemies[i].GetComponent<Movement>();
 			others[i][0] = mvm.radius;
-			others[i][1] = (mvm.getTypeID == typeID ? 1.0f : 0f);
+			others[i][1] = (mvm.getTypeID() == typeID ? 1.0f : 0f);
 			Vector3 d = gameObject.transform.position - mvm.transform.position;
-			others[i][2] = Mathf.Sqrt(d.x * d.x, d.y * d.y);
+			others[i][2] = Mathf.Sqrt(d.x * d.x + d.y * d.y);
 			others[i][3] = Mathf.Atan2(d.y, d.x);
 		}
 		DynValue res = ai.Call(ai.Globals["update"], self, others);
