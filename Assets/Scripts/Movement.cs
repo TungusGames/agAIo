@@ -71,8 +71,7 @@ public class Movement : MonoBehaviour {
 	void askController() {
 		myController.update(radius, energy, speed, angle, new GameObject[0], out wantSplit, out inputSpeed, out inputAngle);
 		if (wantSplit)
-			;
-			//Split();
+			split();
 	}
 		
 	public void setRadius(float newR) {
@@ -82,9 +81,34 @@ public class Movement : MonoBehaviour {
 	}
 
 	public void split() {
-		
+		float[] stats = { myStats.maxSpeed, myStats.energyMul, myStats.statGainMul, myStats.splitCostMul };
+		float[] weights = new float[4];
+		float[] stats1 = new float[4];
+		float[] stats2 = new float[4];
+		myController.getEvolve (weights);
+		int stat_max=weights [2]
+		int sum=0;
+		for (int i = 0; i < 4; i++)
+			sum += weights [i];
+		if (sum > stat_max) {
+			for (int i = 0; i < 4; i++)
+				weights[i]=weights[i]*stat_max/sum;
+		}
+
+		for(int i=0;i<4;i++){
+			stats1[i]= stats[i] + weights[i]/2 + Gaussian.getGaussian(0, weights[i]);
+		}
+		for(int i=0;i<4;i++){
+			stats2[i]= stats[i] + weights[i]/2 + Gaussian.getGaussian(0, weights[i]);
+		}
+
+		float r=radius/2*(1-100/myStats.splitCostMul);
 		float dir = Random.value * 180;
-	
+
+		SpawnHandler.newAI(x+r*Mathf.Sin(dir), y+r*Mathf.Sin(dir), 0, r, dir, 		0, stats1[0], stats1[1], stats1[2], stats1[3]);
+		SpawnHandler.newAI(x-r*Mathf.Sin(dir), y-r*Mathf.Sin(dir), 0, r, dir+180, 	0, stats2[0], stats2[1], stats2[2], stats2[3]);
+
+		Destroy(gameObject);	
 	}
 
 }

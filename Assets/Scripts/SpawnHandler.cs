@@ -20,6 +20,8 @@ public class SpawnHandler : MonoBehaviour {
 
 	private float myTotalRadiusSquared = 0;
 
+	public static GameObject newAI (float x, float y, float E, float r, float f, float v, float a_max, float E_mul, float stat_mul, float split_cost_mul); //returns the new AI
+
 	// Use this for initialization
 	void Start () {
 		INSTANCE = this;

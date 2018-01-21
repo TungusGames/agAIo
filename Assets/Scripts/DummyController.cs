@@ -16,4 +16,6 @@ public class DummyController : Controller {
 		goalSpeed = 1;
 		goalAngle = Random.value*360;
 	}
+
+	public void getEvolve(out float[] args){}
 }

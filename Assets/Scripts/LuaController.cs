@@ -37,9 +37,12 @@ public class LuaController : Controller {
 		}
 	}
 
-	public float[] getEvolve() {
+	public void getEvolve(out float[] weights) {
 		DynValue res = ai.Call(ai.Globals["getEvolve"]);
-		float[] vector = new float[0];
-		return vector;
+
+		weights[0] = Mathf.Abs ((float)ai.Globals.Get ("d_a_max").Number);
+		weights[0] = Mathf.Abs ((float)ai.Globals.Get("d_E_mul").Number);
+		weights[0] = Mathf.Abs ((float)ai.Globals.Get("d_stat_mul").Number);
+		weights[0] = Mathf.Abs ((float)ai.Globals.Get("d_split_cost_mul").Number);
 	}
 }

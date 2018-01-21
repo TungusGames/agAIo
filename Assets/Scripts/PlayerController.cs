@@ -18,4 +18,6 @@ public class PlayerController : Controller {
 		goalAngle = Mathf.Atan2(y, x);
 		split = false;
 	}
+
+	public void getEvolve(out float[] args){}
 }
