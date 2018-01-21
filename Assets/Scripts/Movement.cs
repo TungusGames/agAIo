@@ -6,23 +6,21 @@ public class Movement : MonoBehaviour {
 
 
 	public class Stats {
-		public float maxSpeed;
-		public float maxRot;
+		
+		public float maxAcc;
+        public float maxSpeed;
 		public float energyMul;
 		public float statGainMul;
 		public float splitCostMul;
-		public Stats(float maxSpeed, float maxRot, float energyMul, float statGainMul, float splitCostMul) {
-			this.maxSpeed = maxSpeed;
-			this.maxRot = maxRot; 
-			this.energyMul = energyMul; 
-			this.statGainMul = statGainMul; 
-			this.splitCostMul = splitCostMul;
-		}
+
+		public Stats(float maxAcc, float maxSpeed, float energyMul, float statGainMul, float splitCostMul)
+		{this.maxAcc = maxAcc; this.maxSpeed = maxSpeed; this.energyMul = energyMul; this.statGainMul = statGainMul; this.splitCostMul = splitCostMul;}
+
 		public Stats() 
-		{maxSpeed = 5; maxRot = 20; energyMul = statGainMul = splitCostMul = 1;}
+		{maxAcc = 5; maxSpeed = 1; energyMul = statGainMul = splitCostMul = 1;}
 		public float[] asArray()
 		{
-			return new float[]{ maxSpeed, maxRot, energyMul, statGainMul, splitCostMul };
+			return new float[]{ maxAcc, energyMul, statGainMul, splitCostMul };
 		}
 	}
 
@@ -38,8 +36,9 @@ public class Movement : MonoBehaviour {
 	public float radius = 0.1f;
 	private float angle = 0;
 	private float speed = 1;
+    
 
-	float inputSpeed, inputAngle;
+    float inputSpeed, inputAngle;
 	bool wantSplit;
 
 	// Use this for initialization
@@ -59,18 +58,43 @@ public class Movement : MonoBehaviour {
 			myController.setup (myStats);
 			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
 		}
-		speed = inputSpeed*myStats.maxSpeed;
-		float dAngle = inputAngle - angle;
-		dAngle %= 360;
-		if (dAngle < -180)
-			dAngle += 360;
-		if (dAngle > 180)
-			dAngle -= 360;
-		if (dAngle > 0)
-			angle = Mathf.Min(inputAngle, angle + Time.deltaTime*myStats.maxRot);
-		if (dAngle < 0)
-			angle = Mathf.Max(inputAngle, angle - Time.deltaTime * myStats.maxRot);
-		transform.Translate(Mathf.Cos(angle) * speed * Time.deltaTime, Mathf.Sin(angle) * speed * Time.deltaTime, 0);
+
+        //speed
+        Vector2 speedvector =new Vector2 (Mathf.Cos(angle) * speed, Mathf.Sin(angle) * speed);
+        Vector2 targetspeedvector=new Vector2(Mathf.Cos(inputAngle) * inputSpeed*myStats.maxSpeed, Mathf.Sin(inputAngle) * inputSpeed*myStats.maxSpeed);
+        Vector2 deltav = targetspeedvector - speedvector;
+        if (deltav.magnitude/Time.deltaTime <= myStats.maxAcc*(1-radius/1000))
+        {
+            if(energy>= deltav.magnitude/Time.deltaTime)
+            {
+                energy -= deltav.magnitude/ Time.deltaTime;
+                speedvector = targetspeedvector;
+            }
+            else
+            {
+                speedvector += ((energy / (deltav.magnitude/Time.deltaTime)) * deltav);
+                energy = 0;
+            }
+        }
+        else
+        {
+            deltav = ((myStats.maxAcc * (1 - radius / 1000)) / (deltav.magnitude/Time.deltaTime)) * deltav;
+            if (energy >= deltav.magnitude/ Time.deltaTime)
+            {
+                energy -= deltav.magnitude/ Time.deltaTime;
+                speedvector = targetspeedvector;
+            }
+            else
+            {
+                speedvector += ((energy / (deltav.magnitude/ Time.deltaTime)) * deltav);
+                energy = 0;
+            }
+
+        }
+		
+		
+		transform.Translate(speedvector.x * Time.deltaTime, speedvector.y * Time.deltaTime, 0);
+
 	}
 
 	void askController()
