@@ -20,11 +20,15 @@ public class SpawnHandler : MonoBehaviour {
 
 	private float myTotalRadiusSquared = 0;
 
+	public HashSet<GameObject> aliveCells;
+
 	// Use this for initialization
 	void Start () {
+		aliveCells = new HashSet<GameObject>();
 		INSTANCE = this;
 		Object[] texts = Resources.LoadAll("AIs/", typeof(TextAsset));
 		AIScripts = new string[texts.Length];
+		InvokeRepeating("recalcTotal", 1f, 1f);
 		for (int i = 0; i < texts.Length; i++) {
 			AIScripts [i] = ((TextAsset)(texts [i])).text;
 
@@ -52,6 +56,8 @@ end";*/}
 		myNumAITypes = AIScripts.Length;
 	}
 
+
+
 	// Update is called once per frame
 	void Update () {
 		while (myTotalRadiusSquared < SimParameters.MAX_TOTAL_RADIUS_SQUARED) {
@@ -59,10 +65,11 @@ end";*/}
 			float newX = Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH / 2;
 			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			GameObject cell = Instantiate (prefab, new Vector3 (newX, newY, 0), Quaternion.identity);
+			aliveCells.Add(cell);
 			addRadius(newRadius);
 			Movement mvt = cell.GetComponent<Movement> ();
 			mvt.initAIWithTypeID(currentAIType);
-			mvt.setRadius(newRadius);
+			mvt.setRadiusWithoutReporting(newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
 		}
 	}
@@ -78,5 +85,13 @@ end";*/}
 		addRadius(newR);
 	}
 
+	public void recalcTotal() {
+		float sum = 0.0f;
+		foreach (GameObject obj in aliveCells) {
+			sum += obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
+		}
+		myTotalRadiusSquared = sum;
+	}
+		
 }
 

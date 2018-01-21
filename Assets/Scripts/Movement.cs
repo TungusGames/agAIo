@@ -127,7 +127,9 @@ public class Movement : MonoBehaviour {
             angle = 0;
         }
         transform.Translate(speedvector.x * Time.deltaTime, speedvector.y * Time.deltaTime, 0);
-
+		if (transform.position.magnitude > SimParameters.MAP_RADIUS) {
+			transform.position = transform.position.normalized * SimParameters.MAP_RADIUS;
+		}
 	}
 
 	void askController()
@@ -147,6 +149,11 @@ public class Movement : MonoBehaviour {
 	{
 		transform.localScale = new Vector3(newR, newR, newR) * SimParameters.SPRITE_SCALAR;
 		SpawnHandler.getInstance().changeRadius(radius, newR);
+		radius = newR;
+	}
+
+	public void setRadiusWithoutReporting(float newR) {
+		transform.localScale = new Vector3(newR, newR, newR) * SimParameters.SPRITE_SCALAR;
 		radius = newR;
 	}
 

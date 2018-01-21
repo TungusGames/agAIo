@@ -25,6 +25,7 @@ public class EatChecker : MonoBehaviour {
 			float r2 = other.gameObject.GetComponent<Movement>().radius;
 			myMovement.setRadius(Mathf.Sqrt(r1 * r1 + r2 * r2));
 			SpawnHandler.getInstance().removeRadius(r2);
+			SpawnHandler.getInstance().aliveCells.Remove(other.gameObject);
 			Destroy(other.gameObject);
 		}
 	}
