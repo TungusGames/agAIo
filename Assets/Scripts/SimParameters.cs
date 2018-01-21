@@ -17,7 +17,8 @@ public class SimParameters
 		new Color(0.337f,0.584f,0.196f),
 		new Color(0.612f,0.204f,0.298f),
 		new Color(0.149f,0.443f,0.345f),
-		new Color(0.667f,0.373f,0.224f)
+		new Color(0.667f,0.373f,0.224f),
+		new Color(0.667f,0.557f,0.224f)
 	};
 }
 
