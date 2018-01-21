@@ -59,6 +59,9 @@ public class Movement : MonoBehaviour {
 			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
 		}
 
+		//Shrink
+		setRadius(radius*(1-Time.deltaTime*0.01f));
+
         //speed
 		Vector2 speedvector =new Vector2 (Mathf.Cos(angle*Mathf.Deg2Rad) * speed, Mathf.Sin(angle*Mathf.Deg2Rad) * speed);
         //Debug.Log("speedvector1 " + speedvector);
