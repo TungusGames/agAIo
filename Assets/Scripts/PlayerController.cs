@@ -18,4 +18,8 @@ public class PlayerController : Controller {
 		goalAngle = Mathf.Atan2(y, x)*Mathf.Rad2Deg;
 		split = false;
 	}
+
+	public void getEvolve(out float[] args){
+		args = null;
+	}
 }

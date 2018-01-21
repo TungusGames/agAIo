@@ -6,21 +6,22 @@ public class Movement : MonoBehaviour {
 
 
 	public class Stats {
-		
 		public float maxAcc;
-        public float maxSpeed;
+		public float maxSpeed;
 		public float energyMul;
 		public float statGainMul;
 		public float splitCostMul;
-
-		public Stats(float maxAcc, float maxSpeed, float energyMul, float statGainMul, float splitCostMul)
-		{this.maxAcc = maxAcc; this.maxSpeed = maxSpeed; this.energyMul = energyMul; this.statGainMul = statGainMul; this.splitCostMul = splitCostMul;}
-
+		public Stats(float maxAcc, float maxSpeed, float energyMul, float statGainMul, float splitCostMul) {
+			this.maxAcc = maxAcc;
+			this.maxSpeed = maxSpeed;
+			this.energyMul = energyMul;
+			this.statGainMul = statGainMul;
+			this.splitCostMul = splitCostMul;
+		}
 		public Stats() 
 		{maxAcc = 5; maxSpeed = 1; energyMul = statGainMul = splitCostMul = 1;}
-		public float[] asArray()
-		{
-			return new float[]{ maxAcc, energyMul, statGainMul, splitCostMul };
+		public float[] asArray() {
+			return new float[]{ maxAcc, maxSpeed, energyMul, statGainMul, splitCostMul };
 		}
 	}
 
@@ -43,8 +44,6 @@ public class Movement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//myController = new DummyController(); 
-		myController = null;
 		transform.localScale = new Vector3(radius, radius, radius) * SimParameters.SPRITE_SCALAR;
 	}
 		
@@ -52,11 +51,9 @@ public class Movement : MonoBehaviour {
 	void Update () {
 		if (myController == null) {
 			if (debugByPlayer)
-				myController = new PlayerController();
+				initController(-1);
 			else
-				myController = new LuaController (0, gameObject); //Should be never reached
-			myController.setup (myStats);
-			InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
+				initController(0); //Should never be reached
 		}
 
 		//Shrink
@@ -105,10 +102,9 @@ public class Movement : MonoBehaviour {
             }
             else
             {
-                if (deltav.magnitude != 0)
+				if (deltav.magnitude != 0) {
 					speedvector += ((energy / (deltav.magnitude / Time.deltaTime)) * deltav);
-                else
-					;
+				}
                 energy = 0;
                 
             }
@@ -131,7 +127,7 @@ public class Movement : MonoBehaviour {
 			transform.position = transform.position.normalized * SimParameters.MAP_RADIUS;
 		}
 	}
-
+		
 	void askController()
 	{
 		Collider2D[] enemiesColliders = Physics2D.OverlapCircleAll (transform.position, radius * SimParameters.SIGHT_PER_RADIUS);
@@ -141,12 +137,15 @@ public class Movement : MonoBehaviour {
 				enemies [i++] = enemiesColliders [j].gameObject;
 			}
 		}
+		if (wantSplit)
+			split();
+		if (myController == null)
+			Debug.Log ("!!!!");
 		myController.update(radius, energy, speed, angle, enemies, 
 			out wantSplit, out inputSpeed, out inputAngle);
 	}
 		
-	public void setRadius(float newR)
-	{
+	public void setRadius(float newR) {
 		transform.localScale = new Vector3(newR, newR, newR) * SimParameters.SPRITE_SCALAR;
 		SpawnHandler.getInstance().changeRadius(radius, newR);
 		radius = newR;
@@ -157,16 +156,65 @@ public class Movement : MonoBehaviour {
 		radius = newR;
 	}
 
-	public int getTypeID()
-	{
+	public int getTypeID(){
 		if (myController is LuaController) {
 			return ((LuaController)myController).getTypeID();
 		} else
 			return -1;
 	}
+		
+	public void split() {
+		float[] stats = { myStats.maxAcc, myStats.maxSpeed, myStats.energyMul, myStats.statGainMul, myStats.splitCostMul };
+		float[] weights;
+		float[] stats1 = new float[5];
+		float[] stats2 = new float[5];
+		myController.getEvolve (out weights);
+		float stat_max = stats [3];
+		float sum=0;
+		for (int i = 0; i < 5; i++)
+			sum += weights [i];
+		if (sum > stat_max) {
+			for (int i = 0; i < 5; i++)
+				weights[i]=weights[i]*stat_max/sum;
+		}
+		for(int i=0;i<5;i++){
+			stats1[i]= stats[i] + weights[i]/2 + Gaussian.getGaussian(0, weights[i]);
+		}
+		for(int i=0;i<5;i++){
+			stats2[i]= stats[i] + weights[i]/2 + Gaussian.getGaussian(0, weights[i]);
+		}
 
+		float r=radius/2*(1-100/myStats.splitCostMul);
+		float dir = Random.value * 180;
 
-	public void initAIWithTypeID(int aiType) {
-		myController = new LuaController(aiType, gameObject);
+		float x = transform.position.x;
+		float y = transform.position.y;
+		Stats statsa = new Stats(stats1 [0], stats1 [1], stats1 [2], stats1 [3], stats1 [4]);
+		Stats statsb = new Stats(stats2 [0], stats2 [1], stats2 [2], stats2 [3], stats2 [4]);
+
+		SpawnHandler.getInstance().addAI (getTypeID (), x + r * Mathf.Sin (dir), y + r * Mathf.Sin (dir), r, 0, dir, 0, statsa);
+		SpawnHandler.getInstance().addAI(getTypeID(), x-r*Mathf.Sin(dir), y-r*Mathf.Sin(dir), r, 0, dir+180, 	0, statsb);
+		transform.SetPositionAndRotation(new Vector3 (1e8f, 1e8f, 0f), Quaternion.identity);
+		SpawnHandler.getInstance().aliveCells.Remove(gameObject);
+		Destroy(gameObject);	
+	}
+
+	private void initController(int aiType) {
+		if (aiType == -1) {
+			myController = new PlayerController ();
+		} else {
+			myController = new LuaController (aiType, gameObject);
+		}
+		myController.setup (myStats);
+		InvokeRepeating ("askController", 0f, SimParameters.CONTROLLER_UPDATE_RATE);
+	}
+
+	public void init(int aiType, float r, float E, float angle, float speed, Stats stats) {
+		initController (aiType);
+		setRadiusWithoutReporting(r);
+		energy = E;
+		this.angle = angle;
+		this.speed = speed;
+		myStats = stats;
 	}
 }

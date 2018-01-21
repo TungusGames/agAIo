@@ -1,7 +1,7 @@
 -- AI template
 
 function construct(stats)
-	v_max, r_max, E_mul, stat_mul,split_cost_mul = stats[1], stats[2], stats[3], stats[4], stats[5]
+	a_max, E_mul, stat_mul,split_cost_mul = stats[1], stats[2], stats[3], stats[4]
 	
 	return nil
 end
@@ -18,4 +18,9 @@ function update(self, other)
 	v_t,f_t=1,1
 	
 	return split
+end
+
+function getEvolve()
+	--calculate values for evolve: d_a_max, d_E_mul, d_stat_mul, d_split_cost_mul, sum must not exceed stat_mul or will be normalised
+	d_a_max,d_E_mul_d_stat_mul,d_split_cost_mul = 0,0,0,0
 end
