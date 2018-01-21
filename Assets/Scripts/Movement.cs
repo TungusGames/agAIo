@@ -44,9 +44,7 @@ public class Movement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//myController = new DummyController(); 
-		myController = null;
-		transform.localScale = new Vector3(radius, radius, radius) * SimParameters.SPRITE_SCALAR;
+		setRadius (radius);
 	}
 		
 	// Update is called once per frame
@@ -139,6 +137,8 @@ public class Movement : MonoBehaviour {
 		}
 		if (wantSplit)
 			split();
+		if (myController == null)
+			Debug.Log ("!!!!");
 		myController.update(radius, energy, speed, angle, enemies, 
 			out wantSplit, out inputSpeed, out inputAngle);
 	}

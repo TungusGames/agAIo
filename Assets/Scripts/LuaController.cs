@@ -39,7 +39,8 @@ public class LuaController : Controller {
 			others[i][3] = Mathf.Atan2(d.y, d.x)*Mathf.Rad2Deg;
 		}
 		DynValue res = ai.Call(ai.Globals["update"], self, others);
-		split = res.Boolean;
+		bool spl = res.Boolean;
+		split = spl;
 		if (split) {
 			goalSpeed=0;goalAngle=0;
 		} else {
