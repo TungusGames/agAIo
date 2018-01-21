@@ -59,7 +59,6 @@ public class SpawnHandler : MonoBehaviour {
 		removeRadius(old);
 		addRadius(newR);
 	}
-<<<<<<< HEAD
 
 	public void recalcTotal() {
 		float sum = 0.0f;
@@ -68,8 +67,6 @@ public class SpawnHandler : MonoBehaviour {
 		}
 		myTotalRadiusSquared = sum;
 	}
-		
-=======
 	
 	public GameObject addAI (int type, float x, float y, float r, float E = 0, float angle = 0, float speed = 0, Movement.Stats stats = null) { 	
 		GameObject cell = Instantiate (prefab, new Vector3 (x, y, 0), Quaternion.identity);
@@ -82,6 +79,5 @@ public class SpawnHandler : MonoBehaviour {
 		mvt.init(currentAIType, r,  E, angle, speed, stats);
 		return cell;
 	}
->>>>>>> origin/master
 }
 
