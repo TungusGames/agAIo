@@ -42,7 +42,7 @@ function update(self, other)
 			end	
 		end
 	end
-	if maxenr>r/5 then
+	if maxenr<r*5 then
 		f_t=fmen
 		v_t=vmen
 	else 
