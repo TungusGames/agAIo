@@ -75,7 +75,8 @@ public class Movement : MonoBehaviour {
 
 	void askController()
 	{
-		myController.update(radius, energy, speed, angle, new GameObject[0], out wantSplit, out inputSpeed, out inputAngle);
+		myController.update(radius, energy, speed, angle, Physics2D.OverlapCircleAll(transform.position, radius*SimParameters.SIGHT_PER_RADIUS), 
+			out wantSplit, out inputSpeed, out inputAngle);
 	}
 		
 	public void setRadius(float newR)
@@ -83,6 +84,14 @@ public class Movement : MonoBehaviour {
 		transform.localScale = new Vector3(newR, newR, newR) * SimParameters.SPRITE_SCALAR;
 		SpawnHandler.getInstance().changeRadius(radius, newR);
 		radius = newR;
+	}
+
+	public void getTypeID()
+	{
+		if (myController is LuaController) {
+			return ((LuaController)myController).getTypeID();
+		} else
+			return -1;
 	}
 
 }

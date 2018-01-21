@@ -9,6 +9,7 @@ public class SimParameters
 	public static readonly float MIN_SPAWN_RADIUS = 0.5f;
 	public static readonly float MAX_SPAWN_RADIUS = 1f;
 	public static readonly float SPRITE_SCALAR = 11f;
+	public static readonly float SIGHT_PER_RADIUS = 10f;
 
 }
 
