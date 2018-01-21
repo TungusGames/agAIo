@@ -6,12 +6,14 @@ using MoonSharp.Interpreter;
 public class SpawnHandler : MonoBehaviour {
 
 	public static string[] AIScripts;
+	public static string[] AINames;
 	private static SpawnHandler INSTANCE;
 	public static SpawnHandler getInstance()
 	{
 		return INSTANCE;
 	}
 
+	private GameObject[] textLabels= new GameObject[4];
 
 	[SerializeField]
 	public GameObject prefab;
@@ -32,8 +34,14 @@ public class SpawnHandler : MonoBehaviour {
 		InvokeRepeating("recalcTotal", 1f, 1f);
 		for (int i = 0; i < texts.Length; i++) {
 			AIScripts [i] = ((TextAsset)(texts [i])).text;
+			AINames[i] = ((TextAsset)(texts [i])).name;
 		}
 		myNumAITypes = AIScripts.Length;
+		textLabels[0] = GameObject.Find ("Text");
+		textLabels[1] = GameObject.Find ("Text (1)");
+		textLabels[2] = GameObject.Find ("Text (2)");
+		textLabels[3] = GameObject.Find ("Text (3)");
+
 	}
 
 
@@ -46,6 +54,9 @@ public class SpawnHandler : MonoBehaviour {
 			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			addAI (currentAIType, newX, newY, newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
+		}
+		for (int i = 0; i < 4 && i < myNumAITypes; ++i) {
+			
 		}
 	}
 
