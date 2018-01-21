@@ -64,7 +64,6 @@ public class Movement : MonoBehaviour {
         //Debug.Log("speedvector1 " + speedvector);
 		Vector2 targetspeedvector=new Vector2(Mathf.Cos(inputAngle*Mathf.Deg2Rad) * inputSpeed*myStats.maxSpeed, Mathf.Sin(inputAngle*Mathf.Deg2Rad) * inputSpeed*myStats.maxSpeed);
         Vector2 deltav = targetspeedvector - speedvector;
-        //Debug.Log("speed2: " + speed + " angle: " + angle + " speedvector: " + speedvector + " deltav: " + deltav + " targetspeed: " + targetspeedvector);
         if (deltav.magnitude/Time.deltaTime <= myStats.maxAcc*(1-radius/1000))
         {
             if(energy>= deltav.magnitude/Time.deltaTime)
@@ -80,7 +79,6 @@ public class Movement : MonoBehaviour {
                 }
                 else
                 {
-                    ;
                 }
                 energy = 0;
             }
@@ -105,9 +103,9 @@ public class Movement : MonoBehaviour {
             else
             {
                 if (deltav.magnitude != 0)
-                    speedvector += ((energy / (deltav.magnitude / Time.deltaTime)) * deltav);
+					speedvector += ((energy / (deltav.magnitude / Time.deltaTime)) * deltav);
                 else
-                    ;
+					;
                 energy = 0;
                 
             }
@@ -115,11 +113,11 @@ public class Movement : MonoBehaviour {
         }
         //Debug.Log("speed: " + speed + " angle: " + angle + " speedvector: " + speedvector + " deltav: " + deltav + " targetspeed: " + targetspeedvector);
         //Debug.Log("energy" + energy);
-        energy += 2;
+		energy += 10*Time.deltaTime;
         speed = speedvector.magnitude;
         if (speedvector.magnitude > 0)
         {
-			angle = Mathf.Acos(speedvector.x / speedvector.magnitude)*Mathf.Rad2Deg;
+			angle = Mathf.Atan2(speedvector.y, speedvector.x)*Mathf.Rad2Deg;
         }
         else
         {
