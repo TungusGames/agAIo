@@ -61,8 +61,10 @@ public class Movement : MonoBehaviour {
 
         //speed
         Vector2 speedvector =new Vector2 (Mathf.Cos(angle) * speed, Mathf.Sin(angle) * speed);
+        //Debug.Log("speedvector1 " + speedvector);
         Vector2 targetspeedvector=new Vector2(Mathf.Cos(inputAngle) * inputSpeed*myStats.maxSpeed, Mathf.Sin(inputAngle) * inputSpeed*myStats.maxSpeed);
         Vector2 deltav = targetspeedvector - speedvector;
+        //Debug.Log("speed2: " + speed + " angle: " + angle + " speedvector: " + speedvector + " deltav: " + deltav + " targetspeed: " + targetspeedvector);
         if (deltav.magnitude/Time.deltaTime <= myStats.maxAcc*(1-radius/1000))
         {
             if(energy>= deltav.magnitude/Time.deltaTime)
@@ -72,28 +74,58 @@ public class Movement : MonoBehaviour {
             }
             else
             {
-                speedvector += ((energy / (deltav.magnitude/Time.deltaTime)) * deltav);
+                if (deltav.magnitude != 0)
+                {
+                    speedvector += ((energy / (deltav.magnitude / Time.deltaTime)) * deltav);
+                }
+                else
+                {
+                    ;
+                }
                 energy = 0;
             }
         }
         else
         {
-            deltav = ((myStats.maxAcc * (1 - radius / 1000)) / (deltav.magnitude/Time.deltaTime)) * deltav;
+            if (deltav.magnitude != 0)
+            {
+                deltav = ((myStats.maxAcc * (1 - radius / 1000)) / (deltav.magnitude / Time.deltaTime)) * deltav;
+            }
+            else
+            {
+                deltav.x = 0;
+                deltav.y = 0;
+            }
             if (energy >= deltav.magnitude/ Time.deltaTime)
             {
                 energy -= deltav.magnitude/ Time.deltaTime;
                 speedvector = targetspeedvector;
+                
             }
             else
             {
-                speedvector += ((energy / (deltav.magnitude/ Time.deltaTime)) * deltav);
+                if (deltav.magnitude != 0)
+                    speedvector += ((energy / (deltav.magnitude / Time.deltaTime)) * deltav);
+                else
+                    ;
                 energy = 0;
+                
             }
 
         }
-		
-		
-		transform.Translate(speedvector.x * Time.deltaTime, speedvector.y * Time.deltaTime, 0);
+        //Debug.Log("speed: " + speed + " angle: " + angle + " speedvector: " + speedvector + " deltav: " + deltav + " targetspeed: " + targetspeedvector);
+        //Debug.Log("energy" + energy);
+        energy += 2;
+        speed = speedvector.magnitude;
+        if (speedvector.magnitude > 0)
+        {
+            angle = Mathf.Acos(speedvector.x / speedvector.magnitude);
+        }
+        else
+        {
+            angle = 0;
+        }
+        transform.Translate(speedvector.x * Time.deltaTime, speedvector.y * Time.deltaTime, 0);
 
 	}
 
