@@ -44,7 +44,7 @@ public class Movement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		setRadius (radius);
+		transform.localScale = new Vector3(radius, radius, radius) * SimParameters.SPRITE_SCALAR;
 	}
 		
 	// Update is called once per frame
