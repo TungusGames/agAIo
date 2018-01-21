@@ -126,6 +126,7 @@ public class Movement : MonoBehaviour {
             angle = 0;
         }
         transform.Translate(speedvector.x * Time.deltaTime, speedvector.y * Time.deltaTime, 0);
+
 	}
 		
 	void askController()
@@ -209,5 +210,4 @@ public class Movement : MonoBehaviour {
 		this.speed = speed;
 		myStats = stats;
 	}
-		
 }

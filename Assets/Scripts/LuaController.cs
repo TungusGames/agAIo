@@ -53,7 +53,6 @@ public class LuaController : Controller {
 	{
 		return typeID;
 	}
-
 	public void getEvolve(out float[] weights) {
 		DynValue res = ai.Call(ai.Globals["getEvolve"]);
 		weights = new float[5];
