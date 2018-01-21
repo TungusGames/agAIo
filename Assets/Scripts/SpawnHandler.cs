@@ -76,6 +76,7 @@ public class SpawnHandler : MonoBehaviour {
 		if (stats == null) {
 			stats = new Movement.Stats ();
 		}
+		cell.GetComponent<SpriteRenderer> ().color = (SimParameters.COLORS) [type % (SimParameters.COLORS.Length)];
 		mvt.init(currentAIType, r,  E, angle, speed, stats);
 		return cell;
 	}
