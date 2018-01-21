@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour {
 			this.splitCostMul = splitCostMul;
 		}
 		public Stats() 
-		{maxAcc = 5; maxSpeed = 1; energyMul = 1; statGainMul = 5; splitCostMul = 1;}
+		{maxAcc = 5; maxSpeed = 1.2f; energyMul = 1; statGainMul = 5; splitCostMul = 1;}
 		public float[] asArray() {
 			return new float[]{ maxAcc, maxSpeed, energyMul, statGainMul, splitCostMul };
 		}

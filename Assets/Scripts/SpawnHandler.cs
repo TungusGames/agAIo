@@ -69,7 +69,7 @@ public class SpawnHandler : MonoBehaviour {
 			massOfTypes[i] = 0;
 		}
 		foreach (GameObject obj in aliveCells) {
-			int w = obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
+			float w = obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
 
 			int t = obj.GetComponent<Movement>().getTypeID;
 			if (t != -1)

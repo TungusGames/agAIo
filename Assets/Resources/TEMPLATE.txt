@@ -16,7 +16,9 @@ function update(self, other)
 	-- set split to true if want to split, otherwise set v_t to target speed, f_t to target facing; always return split
 	
 	v_t,f_t=1,1
-	
+	if (r>5) then
+		split=true
+	end
 	return split
 end
 
