@@ -183,8 +183,8 @@ public class Movement : MonoBehaviour {
 		for(int i=0;i<5;i++){
 			stats2[i]= stats[i] + weights[i]/2 + Gaussian.getGaussian(0, weights[i]);
 		}
-
-		float r=radius/2*(1-100/myStats.splitCostMul);
+			
+		float r = Mathf.Sqrt(radius*radius/2*(1-myStats.splitCostMul/100));
 		float dir = Random.value * 180;
 
 		float x = transform.position.x;
