@@ -19,5 +19,7 @@ public class PlayerController : Controller {
 		split = false;
 	}
 
-	public void getEvolve(out float[] args){}
+	public void getEvolve(out float[] args){
+		args = null;
+	}
 }

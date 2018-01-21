@@ -1,9 +1,6 @@
 ﻿using System;
 
-namespace AssemblyCSharp
-{
-	public static class Guassian
-	{
+public static class Gaussian	{
 		private static Random rand = new Random(); //reuse this if you are generating many
 
 		public static float getGaussian(float mean, float stdDev){
@@ -21,5 +18,5 @@ namespace AssemblyCSharp
 		}
 
 	}
-}
+
 

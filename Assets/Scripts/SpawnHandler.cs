@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MoonSharp.Interpreter;
+
 public class SpawnHandler : MonoBehaviour {
 
 	public static string[] AIScripts;
@@ -20,8 +21,6 @@ public class SpawnHandler : MonoBehaviour {
 
 	private float myTotalRadiusSquared = 0;
 
-	public static GameObject newAI (float x, float y, float E, float r, float f, float v, float a_max, float E_mul, float stat_mul, float split_cost_mul); //returns the new AI
-
 	// Use this for initialization
 	void Start () {
 		INSTANCE = this;
@@ -39,9 +38,7 @@ public class SpawnHandler : MonoBehaviour {
 			float newRadius = SimParameters.MIN_SPAWN_RADIUS + Random.value * (SimParameters.MAX_SPAWN_RADIUS - SimParameters.MIN_SPAWN_RADIUS);
 			float newX = Random.value * (SimParameters.MAP_WIDTH) - SimParameters.MAP_WIDTH / 2;
 			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
-			GameObject cell = Instantiate (prefab, new Vector3 (newX, newY, 0), Quaternion.identity);
-			addRadius(newRadius);
-			cell.GetComponent<Movement> ().setRadius(newRadius);
+			addAI (currentAIType, newX, newY, 0, newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
 		}
 	}
@@ -56,6 +53,16 @@ public class SpawnHandler : MonoBehaviour {
 		removeRadius(old);
 		addRadius(newR);
 	}
-
+	
+	public GameObject addAI (int type, float x, float y, float r, float E = 0, float angle = 0, float speed = 0, Movement.Stats stats = null) { 	
+		GameObject cell = Instantiate (prefab, new Vector3 (x, y, 0), Quaternion.identity);
+		addRadius(r);
+		Movement mvt = cell.GetComponent<Movement> ();
+		if (stats == null) {
+			stats = new Movement.Stats ();
+		}
+		mvt.init(currentAIType, r,  E, angle, speed, stats);
+		return cell;
+	}
 }
 
