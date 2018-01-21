@@ -1,0 +1,32 @@
+-- AI template
+
+function construct(stats)
+	a_max,v_max,E_mul, stat_mul,split_cost_mul = stats[1], stats[2], stats[3], stats[4], stats[5]
+	
+	return nil
+end
+
+function update(self, other)
+	split=false
+	r, E, v, f = self[1], self[2], self[3], self[4]
+	
+	-- other[i][] contains data about the i-th nerby AI, other[i][1] is its radius, other[i][2] is 1 if its the same species and 1 if its not, other[i][3] is its relative distance and other[i][4] is its direction from you
+	
+	
+	-- set split to true if want to split, otherwise set v_t to target speed, f_t to target facing; always return split
+	
+	local mindist = 10000
+	local l = #other
+	v_t = 0
+	f_t = 180
+	for i=1,l do
+		if other[i][3] < mindist then
+			if other[i][1] < r then
+				mindist,f_t,v_t = other[i][3],other[i][4]+180, math.max(1.0-other[i][3]/20, 0)
+			else
+				mindist,f_t,v_t = other[i][3],other[i][4], math.max(1.0-other[i][3]/20, 0)
+			end
+		end
+	end
+	return split
+end

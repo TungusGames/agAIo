@@ -60,9 +60,9 @@ public class Movement : MonoBehaviour {
 		}
 
         //speed
-        Vector2 speedvector =new Vector2 (Mathf.Cos(angle) * speed, Mathf.Sin(angle) * speed);
+		Vector2 speedvector =new Vector2 (Mathf.Cos(angle*Mathf.Deg2Rad) * speed, Mathf.Sin(angle*Mathf.Deg2Rad) * speed);
         //Debug.Log("speedvector1 " + speedvector);
-        Vector2 targetspeedvector=new Vector2(Mathf.Cos(inputAngle) * inputSpeed*myStats.maxSpeed, Mathf.Sin(inputAngle) * inputSpeed*myStats.maxSpeed);
+		Vector2 targetspeedvector=new Vector2(Mathf.Cos(inputAngle*Mathf.Deg2Rad) * inputSpeed*myStats.maxSpeed, Mathf.Sin(inputAngle*Mathf.Deg2Rad) * inputSpeed*myStats.maxSpeed);
         Vector2 deltav = targetspeedvector - speedvector;
         //Debug.Log("speed2: " + speed + " angle: " + angle + " speedvector: " + speedvector + " deltav: " + deltav + " targetspeed: " + targetspeedvector);
         if (deltav.magnitude/Time.deltaTime <= myStats.maxAcc*(1-radius/1000))
@@ -119,7 +119,7 @@ public class Movement : MonoBehaviour {
         speed = speedvector.magnitude;
         if (speedvector.magnitude > 0)
         {
-            angle = Mathf.Acos(speedvector.x / speedvector.magnitude);
+			angle = Mathf.Acos(speedvector.x / speedvector.magnitude)*Mathf.Rad2Deg;
         }
         else
         {
@@ -132,9 +132,11 @@ public class Movement : MonoBehaviour {
 	void askController()
 	{
 		Collider2D[] enemiesColliders = Physics2D.OverlapCircleAll (transform.position, radius * SimParameters.SIGHT_PER_RADIUS);
-		GameObject[] enemies = new GameObject[enemiesColliders.Length];
-		for (int i = 0; i < enemiesColliders.Length; ++i) {
-			enemies [i] = enemiesColliders [i].gameObject;
+		GameObject[] enemies = new GameObject[enemiesColliders.Length-1];
+		for (int i = 0, j = 0; j < enemiesColliders.Length; ++j) {
+			if (enemiesColliders[j].gameObject != gameObject) {
+				enemies [i++] = enemiesColliders [j].gameObject;
+			}
 		}
 		myController.update(radius, energy, speed, angle, enemies, 
 			out wantSplit, out inputSpeed, out inputAngle);

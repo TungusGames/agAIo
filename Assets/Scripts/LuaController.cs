@@ -36,7 +36,7 @@ public class LuaController : Controller {
 			others[i][1] = (mvm.getTypeID() == typeID ? 1.0f : 0f);
 			Vector3 d = gameObject.transform.position - mvm.transform.position;
 			others[i][2] = Mathf.Sqrt(d.x * d.x + d.y * d.y);
-			others[i][3] = Mathf.Atan2(d.y, d.x);
+			others[i][3] = Mathf.Atan2(d.y, d.x)*Mathf.Rad2Deg;
 		}
 		DynValue res = ai.Call(ai.Globals["update"], self, others);
 		split = res.Boolean;

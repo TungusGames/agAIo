@@ -15,7 +15,7 @@ public class PlayerController : Controller {
 		float x = Input.GetAxis("Horizontal");
 		float y = Input.GetAxis("Vertical");
 		goalSpeed = Mathf.Sqrt(x * x + y * y);
-		goalAngle = Mathf.Atan2(y, x);
+		goalAngle = Mathf.Atan2(y, x)*Mathf.Rad2Deg;
 		split = false;
 	}
 }
