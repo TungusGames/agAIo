@@ -23,6 +23,7 @@ public class EatChecker : MonoBehaviour {
 		if (myCircle.OverlapPoint(other.transform.position)) {
 			float r1 = myMovement.radius;
 			float r2 = other.gameObject.GetComponent<Movement>().radius;
+			if (r2>r1) return;
 			myMovement.setRadius(Mathf.Sqrt(r1 * r1 + r2 * r2));
 			SpawnHandler.getInstance().removeRadius(r2);
 			SpawnHandler.getInstance().aliveCells.Remove(other.gameObject);

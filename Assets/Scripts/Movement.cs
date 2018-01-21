@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour {
 			this.splitCostMul = splitCostMul;
 		}
 		public Stats() 
-		{maxAcc = 5; maxSpeed = 1; energyMul = statGainMul = splitCostMul = 1;}
+		{maxAcc = 5; maxSpeed = 1; energyMul = 1; statGainMul = 5; splitCostMul = 1;}
 		public float[] asArray() {
 			return new float[]{ maxAcc, maxSpeed, energyMul, statGainMul, splitCostMul };
 		}
@@ -132,7 +132,7 @@ public class Movement : MonoBehaviour {
 	{
 		Collider2D[] enemiesColliders = Physics2D.OverlapCircleAll (transform.position, radius * SimParameters.SIGHT_PER_RADIUS);
 		GameObject[] enemies = new GameObject[enemiesColliders.Length-1];
-		for (int i = 0, j = 0; j < enemiesColliders.Length; ++j) {
+		for (int i = 0, j = 0; j < enemiesColliders.Length && i < enemies.Length; ++j) {
 			if (enemiesColliders[j].gameObject != gameObject) {
 				enemies [i++] = enemiesColliders [j].gameObject;
 			}
@@ -192,8 +192,8 @@ public class Movement : MonoBehaviour {
 		Stats statsa = new Stats(stats1 [0], stats1 [1], stats1 [2], stats1 [3], stats1 [4]);
 		Stats statsb = new Stats(stats2 [0], stats2 [1], stats2 [2], stats2 [3], stats2 [4]);
 
-		SpawnHandler.getInstance().addAI (getTypeID (), x + r * Mathf.Sin (dir), y + r * Mathf.Sin (dir), r, 0, dir, 0, statsa);
-		SpawnHandler.getInstance().addAI(getTypeID(), x-r*Mathf.Sin(dir), y-r*Mathf.Sin(dir), r, 0, dir+180, 	0, statsb);
+		SpawnHandler.getInstance().addAI (getTypeID (), x + r * Mathf.Sin (dir), y + r * Mathf.Sin (dir), r, 0, dir+180, 2, statsa);
+		SpawnHandler.getInstance().addAI(getTypeID(), x-r*Mathf.Sin(dir), y-r*Mathf.Sin(dir), r, 0, dir, 	2, statsb);
 		transform.SetPositionAndRotation(new Vector3 (1e8f, 1e8f, 0f), Quaternion.identity);
 		SpawnHandler.getInstance().aliveCells.Remove(gameObject);
 		Destroy(gameObject);	
