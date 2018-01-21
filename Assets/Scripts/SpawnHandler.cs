@@ -64,7 +64,7 @@ public class SpawnHandler : MonoBehaviour {
 		float sum = 0.0f;
 		foreach (GameObject obj in aliveCells) {
 			sum += obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
-		}
+		} 	
 		myTotalRadiusSquared = sum;
 	}
 	
@@ -77,7 +77,7 @@ public class SpawnHandler : MonoBehaviour {
 			stats = new Movement.Stats ();
 		}
 		cell.GetComponent<SpriteRenderer> ().color = (SimParameters.COLORS) [type % (SimParameters.COLORS.Length)];
-		mvt.init(currentAIType, r,  E, angle, speed, stats);
+		mvt.init(type, r,  E, angle, speed, stats);
 		return cell;
 	}
 }
