@@ -25,12 +25,15 @@ public class SpawnHandler : MonoBehaviour {
 
 	public HashSet<GameObject> aliveCells;
 
+	public float[] massOfTypes;
+
 	// Use this for initialization
 	void Start () {
 		aliveCells = new HashSet<GameObject>();
 		INSTANCE = this;
 		Object[] texts = Resources.LoadAll("AIs/", typeof(TextAsset));
 		AIScripts = new string[texts.Length];
+		massOfTypes = new float[texts.Length];
 		InvokeRepeating("recalcTotal", 1f, 1f);
 		for (int i = 0; i < texts.Length; i++) {
 			AIScripts [i] = ((TextAsset)(texts [i])).text;
@@ -73,8 +76,16 @@ public class SpawnHandler : MonoBehaviour {
 
 	public void recalcTotal() {
 		float sum = 0.0f;
+		for (int i = 0; i < massOfTypes.Length; i++) {
+			massOfTypes[i] = 0;
+		}
 		foreach (GameObject obj in aliveCells) {
-			sum += obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
+			int w = obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
+
+			int t = obj.GetComponent<Movement>().getTypeID;
+			if (t != -1)
+				massOfTypes[t] += w;
+			sum += w;
 		} 	
 		myTotalRadiusSquared = sum;
 	}
