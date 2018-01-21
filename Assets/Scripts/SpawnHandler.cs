@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEngine.UI;
 using MoonSharp.Interpreter;
 
 public class SpawnHandler : MonoBehaviour {
@@ -13,7 +15,9 @@ public class SpawnHandler : MonoBehaviour {
 		return INSTANCE;
 	}
 
-	private GameObject[] textLabels= new GameObject[4];
+	public static readonly int NUM_LABELS = 5;
+
+	private GameObject[] textLabels= new GameObject[NUM_LABELS];
 
 	[SerializeField]
 	public GameObject prefab;
@@ -32,19 +36,21 @@ public class SpawnHandler : MonoBehaviour {
 		aliveCells = new HashSet<GameObject>();
 		INSTANCE = this;
 		Object[] texts = Resources.LoadAll("AIs/", typeof(TextAsset));
-		AIScripts = new string[texts.Length];
-		massOfTypes = new float[texts.Length];
+		myNumAITypes = texts.Length;
+		AIScripts = new string[myNumAITypes];
+		AINames = new string[myNumAITypes];
+		massOfTypes = new float[myNumAITypes];
 		InvokeRepeating("recalcTotal", 1f, 1f);
-		for (int i = 0; i < texts.Length; i++) {
+		for (int i = 0; i < myNumAITypes; i++) {
 			AIScripts [i] = ((TextAsset)(texts [i])).text;
-			AINames[i] = ((TextAsset)(texts [i])).name;
+			AINames [i] = ((TextAsset)(texts [i])).name;
 		}
 		myNumAITypes = AIScripts.Length;
 		textLabels[0] = GameObject.Find ("Text");
 		textLabels[1] = GameObject.Find ("Text (1)");
 		textLabels[2] = GameObject.Find ("Text (2)");
 		textLabels[3] = GameObject.Find ("Text (3)");
-
+		textLabels[4] = GameObject.Find ("Text (4)");
 	}
 
 
@@ -57,9 +63,6 @@ public class SpawnHandler : MonoBehaviour {
 			float newY = Random.value * (SimParameters.MAP_HEIGHT) - SimParameters.MAP_HEIGHT / 2;
 			addAI (currentAIType, newX, newY, newRadius);
 			currentAIType = (currentAIType + 1) % myNumAITypes; // cycling through AI types
-		}
-		for (int i = 0; i < 4 && i < myNumAITypes; ++i) {
-			
 		}
 	}
 
@@ -80,13 +83,17 @@ public class SpawnHandler : MonoBehaviour {
 			massOfTypes[i] = 0;
 		}
 		foreach (GameObject obj in aliveCells) {
-			int w = obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
+			float w = obj.GetComponent<Movement>().radius*obj.GetComponent<Movement>().radius;
 
-			int t = obj.GetComponent<Movement>().getTypeID;
+			int t = obj.GetComponent<Movement>().getTypeID();
 			if (t != -1)
 				massOfTypes[t] += w;
 			sum += w;
 		} 	
+		for (int i = 0; i < NUM_LABELS && i < myNumAITypes; ++i) {
+			Debug.Log (massOfTypes [i] + " " + AINames [i]);
+			textLabels [i].GetComponent<Text> ().text = massOfTypes [i] + AINames [i];
+		}
 		myTotalRadiusSquared = sum;
 	}
 	
@@ -98,7 +105,8 @@ public class SpawnHandler : MonoBehaviour {
 		if (stats == null) {
 			stats = new Movement.Stats ();
 		}
-		cell.GetComponent<SpriteRenderer> ().color = (SimParameters.COLORS) [type % (SimParameters.COLORS.Length)];
+		if (type < NUM_LABELS)
+						cell.GetComponent<SpriteRenderer> ().color = (SimParameters.COLORS) [type % (SimParameters.COLORS.Length)];
 		mvt.init(type, r,  E, angle, speed, stats);
 		return cell;
 	}
