@@ -31,7 +31,6 @@ public class Movement : MonoBehaviour {
 	[SerializeField]
 	bool debugByPlayer = false;
 
-	[SerializeField]
 	private Controller myController;
 
 	private float energy = 0;
