@@ -49,7 +49,6 @@ function update(self, other)
 	
 	return split
 end";*/}
-		Debug.Log ("" + AIScripts.Length);
 		myNumAITypes = AIScripts.Length;
 	}
 

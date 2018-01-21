@@ -11,8 +11,13 @@ public class Movement : MonoBehaviour {
 		public float energyMul;
 		public float statGainMul;
 		public float splitCostMul;
-		public Stats(float maxSpeed, float maxRot, float energyMul, float statGainMul, float splitCostMul)
-		{maxSpeed = maxSpeed; maxRot = maxRot; energyMul = energyMul; statGainMul = statGainMul; splitCostMul = splitCostMul;}
+		public Stats(float maxSpeed, float maxRot, float energyMul, float statGainMul, float splitCostMul) {
+			this.maxSpeed = maxSpeed;
+			this.maxRot = maxRot; 
+			this.energyMul = energyMul; 
+			this.statGainMul = statGainMul; 
+			this.splitCostMul = splitCostMul;
+		}
 		public Stats() 
 		{maxSpeed = 5; maxRot = 20; energyMul = statGainMul = splitCostMul = 1;}
 		public float[] asArray()
@@ -41,7 +46,7 @@ public class Movement : MonoBehaviour {
 	void Start () {
 		//myController = new DummyController(); 
 		myController = null;
-		setRadius(radius);
+		transform.localScale = new Vector3(radius, radius, radius) * SimParameters.SPRITE_SCALAR;
 	}
 		
 	// Update is called once per frame
