@@ -15,41 +15,32 @@ function update(self, other)
 	
 	-- set split to true if want to split, otherwise set v_t to target speed, f_t to target facing; always return split
 	
-	local mindist = 10000
+	local mindist,minfr = 10000, 10000
+	local frid, friendlyfire=-1,false
 	local l = #other
-	local maxenr=0
-	local minfood=1000
-	local vmen;
-	local vfood;
-	local fmen;
-	local ffood;
-	local imen=0;
-	local ifood=0;
 	v_t = 0
 	f_t = 180
 	for i=1,l do
-		if other[i][3] < mindist then
-			if ((other[i][1] > r) and ((other[i][3]-other[i][1]))>maxenr) then
-				fmen,vmen = other[i][4], math.max(1.0-other[i][3]/30, 0)
-				maxenr=((other[i][3]-other[i][1]))
-				
-			
-			elseif (other[i][1] < r) and (((other[i][3]-other[i][1]))<minfood) then
-			    ffood,vfood = other[i][4]-180, math.max(1.0-other[i][3]/30, 0)
-				minfood=((other[i][3]-other[i][1]))
-				
-				
-			end	
+		if other[i][3]-other[i][1] < mindist and other[i][2]==0 then
+			if other[i][1] < r then
+				mindist,f_t,v_t = other[i][3]-other[i][1],other[i][4]+180, math.max(1.0-other[i][3]/20, 0.3)
+			else
+				mindist,f_t,v_t = other[i][3]-other[i][1],other[i][4], math.max(1.0-other[i][3]/20, 0.3)
+			end
 		end
 	end
-	if maxenr>r/5 then
-		f_t=fmen
-		v_t=vmen
-	else 
-		f_t=ffood
-		v_t=vfood
+	for i=1,l do
+		if other[i][3]-other[i][1]<minfr and other[i][2]==1 then
+			frid, minfr = i,(other[i][3]-other[i][1])
+		end
 	end
-	if r > 3 then
+	if frid~=-1 then
+		if (mindist-minfr<3) then
+			friendlyfire=true
+			v_t, f_t=1, other[frid][4]+180
+		end
+	end
+	if r>4 and ((friendlyfire==false and math.random() < 0.2) or math.random()<0.01) then
 		split = true
 	end
 	return split
@@ -57,5 +48,5 @@ end
 
 function getEvolve()
 	--calculate values for evolve: d_a_max, d_v_max, d_E_mul, d_stat_mul, d_split_cost_mul, sum must not exceed stat_mul or will be normalised
-	d_a_max,d_v_max,d_E_mul,d_stat_mul,d_split_cost_mul = 0,stat_mul/2,stat_mul/2,0,0
+	d_a_max,d_v_max,d_E_mul,d_stat_mul,d_split_cost_mul = stat_mul/5,stat_mul*2/5,stat_mul/10,stat_mul/5,stat_mul/10
 end
