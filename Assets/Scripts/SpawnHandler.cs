@@ -18,6 +18,7 @@ public class SpawnHandler : MonoBehaviour {
 	public static readonly int NUM_LABELS = 5;
 
 	private GameObject[] textLabels= new GameObject[NUM_LABELS];
+	System.IO.StreamWriter file;
 
 	[SerializeField]
 	public GameObject prefab;
@@ -51,6 +52,7 @@ public class SpawnHandler : MonoBehaviour {
 		textLabels[2] = GameObject.Find ("Text (2)");
 		textLabels[3] = GameObject.Find ("Text (3)");
 		textLabels[4] = GameObject.Find ("Text (4)");
+		file = new System.IO.StreamWriter(@"C:\Users\Toma\Documents\HackCambridge Ternary\log.txt");
 	}
 
 
@@ -90,10 +92,13 @@ public class SpawnHandler : MonoBehaviour {
 				massOfTypes[t] += w;
 			sum += w;
 		} 	
+		string logline = "";
 		for (int i = 0; i < NUM_LABELS && i < myNumAITypes; ++i) {
-			Debug.Log (massOfTypes [i] + " " + AINames [i]);
+			//Debug.Log (massOfTypes [i] + " " + AINames [i]);
 			textLabels [i].GetComponent<Text> ().text = massOfTypes [i] + AINames [i];
+			logline = logline + (" " + massOfTypes [i]);
 		}
+		file.WriteLine(logline);
 		myTotalRadiusSquared = sum;
 	}
 	
