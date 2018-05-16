@@ -12,13 +12,13 @@ public class SimParameters
 	public static readonly float SPRITE_SCALAR = 11f;
 	public static readonly float SIGHT_PER_RADIUS = 6f;
 	public static readonly float MAP_RADIUS = 22f;
-
+	public static System.Random rnd=new System.Random();
 	public static readonly Color[] COLORS = {
-		new Color(0.337f,0.584f,0.196f),
-		new Color(0.612f,0.204f,0.298f),
-		new Color(0.149f,0.443f,0.345f),
-		new Color(0.667f,0.373f,0.224f),
-		new Color(0.667f,0.557f,0.224f)
+		new Color((float) (rnd.NextDouble()/5+0.1),(float) (rnd.NextDouble()/5+0.6),(float) (rnd.NextDouble()/5+0.1)),
+		new Color((float) (rnd.NextDouble()/5+0.6),(float) (rnd.NextDouble()/10),(float) (rnd.NextDouble()/3+0.2)),
+		new Color((float) (rnd.NextDouble()/6+0.2),(float) (rnd.NextDouble()/6+0.4),(float) (rnd.NextDouble()/5+0.75)),
+		new Color((float) (rnd.NextDouble()/5+0.75),(float) (rnd.NextDouble()/3+0.2),(float) (rnd.NextDouble()/5)),
+		new Color((float) (rnd.NextDouble()/5+0.75),(float) (rnd.NextDouble()/5+0.75),(float) (rnd.NextDouble()/2))
 	};
 }
 

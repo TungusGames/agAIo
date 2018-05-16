@@ -51,6 +51,9 @@ public class SpawnHandler : MonoBehaviour {
 		textLabels[2] = GameObject.Find ("Text (2)");
 		textLabels[3] = GameObject.Find ("Text (3)");
 		textLabels[4] = GameObject.Find ("Text (4)");
+		for (int i = 0; i < NUM_LABELS && i < myNumAITypes; ++i) {
+			textLabels [i].GetComponent<Text> ().color = (SimParameters.COLORS) [i];
+		}
 	}
 
 
@@ -92,7 +95,7 @@ public class SpawnHandler : MonoBehaviour {
 		} 	
 		for (int i = 0; i < NUM_LABELS && i < myNumAITypes; ++i) {
 			Debug.Log (massOfTypes [i] + " " + AINames [i]);
-			textLabels [i].GetComponent<Text> ().text = massOfTypes [i] + AINames [i];
+			textLabels [i].GetComponent<Text> ().text = System.Math.Round(massOfTypes [i],2)+" "+ AINames [i];
 		}
 		myTotalRadiusSquared = sum;
 	}
