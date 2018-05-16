@@ -24,4 +24,4 @@ Tamás Tardos
 ## Screenshot
 Labels on the left show the total mass for each colour-coded script/"species".
 
-![Screensot 4](Screenshots/agAIo4.PNG)
+![Screensot 5](Screenshots/agAIo5.PNG)
